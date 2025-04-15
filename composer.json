@@ -1,6 +1,6 @@
 {
   "name": "littlerocket/job-queue-bundle",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Allows to run and schedule Symfony console commands as background jobs.",
   "keywords": [
     "job",
