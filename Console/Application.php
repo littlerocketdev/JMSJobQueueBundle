@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Console\Command\Command;
 
 /**
  * Records debugging information for executed commands.
@@ -39,7 +40,7 @@ class Application extends BaseApplication
         }
     }
 
-    public function doRun(InputInterface $input, OutputInterface $output)
+    public function doRun(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
 
