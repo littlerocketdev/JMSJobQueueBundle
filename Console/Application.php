@@ -54,8 +54,6 @@ class Application extends BaseApplication
 
             throw $ex;
         }
-
-        return Command::SUCCESS;
     }
 
     private function saveDebugInformation(\Exception $ex = null)
