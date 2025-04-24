@@ -86,7 +86,7 @@ class RunCommand extends Command
 
     protected function configure()
     {
-        $this->setName($this->defaultName);
+        $this->setName(self::$defaultName);
         $this
             ->setDescription('Runs jobs from the queue.')
             ->addOption('max-runtime', 'r', InputOption::VALUE_REQUIRED, 'The maximum runtime in seconds.', 900)

@@ -28,7 +28,7 @@ class MarkJobIncompleteCommand extends Command
 
     protected function configure()
     {
-        $this->setName($this->defaultName);
+        $this->setName(self::$defaultName);
         $this
             ->setDescription('Internal command (do not use). It marks jobs as incomplete.')
             ->addArgument('job-id', InputArgument::REQUIRED, 'The ID of the Job.');
