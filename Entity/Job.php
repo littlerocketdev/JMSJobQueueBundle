@@ -32,8 +32,8 @@ use Symfony\Component\Debug\Exception\FlattenException;
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
 #[ORM\Table(name: 'jms_jobs')]
-#[ORM\Index('cmd_search_index', columns: ['command'])]
-#[ORM\Index('sorting_index', columns: ['state', 'priority', 'id'])]
+#[ORM\Index(name: 'cmd_search_index', columns: ['command'])]
+#[ORM\Index(name: 'sorting_index', columns: ['state', 'priority', 'id'])]
 #[ORM\Entity]
 #[ORM\ChangeTrackingPolicy('DEFERRED_EXPLICIT')]
 class Job
@@ -92,6 +92,8 @@ class Job
     const PRIORITY_HIGH = 5;
 
     #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
     private $id;
 
     #[ORM\Column(type: 'string', length: 15)]
