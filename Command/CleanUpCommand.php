@@ -30,6 +30,7 @@ class CleanUpCommand extends Command
 
     protected function configure()
     {
+        $this->setName(self::$defaultName);
         $this
             ->setDescription('Cleans up jobs which exceed the maximum retention time.')
             ->addOption(

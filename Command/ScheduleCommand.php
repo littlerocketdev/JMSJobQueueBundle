@@ -35,6 +35,7 @@ class ScheduleCommand extends Command
 
     protected function configure()
     {
+        $this->setName(self::$defaultName);
         $this
             ->setDescription('Schedules jobs at defined intervals')
             ->addOption('max-runtime', null, InputOption::VALUE_REQUIRED, 'The maximum runtime of this command.', 3600)
