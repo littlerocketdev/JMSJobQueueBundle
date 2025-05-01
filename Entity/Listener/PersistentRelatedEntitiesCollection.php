@@ -560,12 +560,6 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
         return new ArrayCollection($filtered);
     }
 
-    /**
-     * Returns the first element of this collection that satisfies the predicate p.
-     *
-     * @param Closure $p
-     * @return mixed|null
-     */
     public function findFirst(Closure $p)
     {
         $this->initialize();
@@ -579,19 +573,10 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
         return null;
     }
 
-    /**
-     * Applies iteratively the given function to each element in the collection,
-     * to reduce the collection to a single value.
-     *
-     * @param Closure $func
-     * @param $initial
-     * @return mixed|null
-     */
     public function reduce(Closure $func, $initial = null)
     {
         $this->initialize();
 
         return array_reduce($this->entities, $func, $initial);
     }
-
 }
