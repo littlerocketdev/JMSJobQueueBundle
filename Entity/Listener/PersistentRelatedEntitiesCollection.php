@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Expr\ClosureExpressionVisitor;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ManagerRegistry;
 use JMS\JobQueueBundle\Entity\Job;
+use Traversable;
 
 /**
  * Collection for persistent related entities.
@@ -187,7 +188,7 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
      * @see containsKey()
      *
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         $this->initialize();
 
@@ -215,7 +216,7 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
      * @see get()
      *
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         $this->initialize();
 
@@ -248,7 +249,7 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
      *
      * @see add()
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \LogicException('Adding new related entities is not supported after initial creation.');
     }
@@ -261,7 +262,7 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
      * @see remove()
      *
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new \LogicException('unset() is not supported.');
     }
@@ -354,7 +355,7 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
      *
      * @return integer The number of elements in the collection.
      */
-    public function count()
+    public function count(): int
     {
         $this->initialize();
 
@@ -370,7 +371,7 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
      * @param mixed $key
      * @param mixed $value
      */
-    public function set($key, $value)
+    public function set($key, $value): void
     {
         throw new \LogicException('set() is not supported.');
     }
@@ -405,7 +406,7 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
      *
      * @return ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         $this->initialize();
 
@@ -497,7 +498,7 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
     /**
      * Clears the collection.
      */
-    public function clear()
+    public function clear(): void
     {
         throw new \LogicException('clear() is not supported.');
     }
@@ -572,14 +573,10 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
         return null;
     }
 
-    public function reduce(Closure $func, mixed $initial = null)
+    public function reduce(Closure $func, $initial = null)
     {
         $this->initialize();
-        $accumulator = $initial;
-        foreach ($this->entities as $key => $element) {
-            $accumulator = $func($accumulator, $element, $key);
-        }
 
-        return $accumulator;
+        return array_reduce($this->entities, $func, $initial);
     }
 }
