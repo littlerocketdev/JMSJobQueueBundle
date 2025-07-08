@@ -2,11 +2,12 @@
 
 namespace JMS\JobQueueBundle\Entity\Type;
 
-use Doctrine\DBAL\Types\ObjectType;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\Type;
 
-class SafeObjectType extends ObjectType
+class SafeObjectType extends Type
 {
-    public function getSQLDeclaration(array $fieldDeclaration, \Doctrine\DBAL\Platforms\AbstractPlatform $platform)
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         return $platform->getBlobTypeDeclarationSQL($fieldDeclaration);
     }
@@ -16,8 +17,22 @@ class SafeObjectType extends ObjectType
         return 'jms_job_safe_object';
     }
 
-    public function requiresSQLCommentHint(\Doctrine\DBAL\Platforms\AbstractPlatform $platform): bool
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
+    }
+
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
+    {
+        return serialize($value);
+    }
+
+    public function convertToPHPValue($value, AbstractPlatform $platform): mixed
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        return unserialize($value, ['allowed_classes' => true]);
     }
 }

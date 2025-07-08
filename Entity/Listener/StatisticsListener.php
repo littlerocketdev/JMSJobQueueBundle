@@ -3,9 +3,13 @@
 namespace JMS\JobQueueBundle\Entity\Listener;
 
 use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
+use Doctrine\Persistence\Mapping\MappingException;
 
 class StatisticsListener
 {
+    /**
+     * @throws MappingException
+     */
     public function postGenerateSchema(GenerateSchemaEventArgs $event)
     {
         $schema = $event->getSchema();
