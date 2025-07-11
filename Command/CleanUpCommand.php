@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'jms-job-queue:clean-up')]
 class CleanUpCommand extends Command
 {
     protected static $defaultName = 'jms-job-queue:clean-up';

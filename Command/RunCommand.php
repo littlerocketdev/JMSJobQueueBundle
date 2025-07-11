@@ -34,6 +34,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
+#[AsCommand(name: 'jms-job-queue:run')]
 class RunCommand extends Command
 {
     protected static $defaultName = 'jms-job-queue:run';
