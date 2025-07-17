@@ -4,10 +4,10 @@ namespace JMS\JobQueueBundle\Entity\Listener;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\DBAL\Exception;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostLoadEventArgs;
 use Doctrine\ORM\Event\PostPersistEventArgs;
 use Doctrine\ORM\Event\PreRemoveEventArgs;
+use Doctrine\ORM\Mapping\PreRemove;
 use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
 use Doctrine\Persistence\ManagerRegistry;
 use JMS\JobQueueBundle\Entity\Job;
@@ -36,7 +36,7 @@ class ManyToAnyListener
         $this->ref->setAccessible(true);
     }
 
-    public function postLoad(PostLoadEventArgs $event)
+    public function postLoad(PostLoadEventArgs $event): void
     {
         $entity = $event->getObject();
         if (!$entity instanceof Job) {
@@ -49,7 +49,7 @@ class ManyToAnyListener
     /**
      * @throws Exception
      */
-    public function preRemove(PreRemoveEventArgs $event)
+    public function preRemove(PreRemoveEventArgs $event): void
     {
         $entity = $event->getObject();
         if (!$entity instanceof Job) {
@@ -65,7 +65,7 @@ class ManyToAnyListener
     /**
      * @throws Exception
      */
-    public function postPersist(PostPersistEventArgs $event)
+    public function postPersist(PostPersistEventArgs $event): void
     {
         $entity = $event->getObject();
         if (!$entity instanceof Job) {
@@ -95,7 +95,7 @@ class ManyToAnyListener
         }
     }
 
-    public function postGenerateSchema(GenerateSchemaEventArgs $event)
+    public function postGenerateSchema(GenerateSchemaEventArgs $event): void
     {
         $schema = $event->getSchema();
 

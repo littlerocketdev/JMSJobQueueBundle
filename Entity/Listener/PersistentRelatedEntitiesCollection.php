@@ -21,14 +21,36 @@ use JMS\JobQueueBundle\Entity\Job;
  */
 class PersistentRelatedEntitiesCollection implements Collection, Selectable
 {
-    private $registry;
-    private $job;
-    private $entities;
+    private \Doctrine\Persistence\ManagerRegistry $registry;
+    private \JMS\JobQueueBundle\Entity\Job $job;
+    private ?array $entities = null;
 
     public function __construct(ManagerRegistry $registry, Job $job)
     {
         $this->registry = $registry;
         $this->job = $job;
+    }
+
+    public function findFirst(\Closure $p)
+    {
+        foreach ($this->entities as $key => $value) {
+            if ($p($key, $value)) {
+                return $value;
+            }
+        }
+
+        return null;
+    }
+
+    public function reduce(\Closure $func, mixed $initial = null)
+    {
+        $result = $initial;
+
+        foreach ($this->entities as $key => $value) {
+            $result = $func($result, $value, $key);
+        }
+
+        return $result;
     }
 
     /**
@@ -43,7 +65,7 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
         return $this->entities;
     }
 
-    private function initialize()
+    private function initialize(): void
     {
         if (null !== $this->entities) {
             return;
@@ -489,7 +511,7 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return __CLASS__ . '@' . spl_object_hash($this);
     }

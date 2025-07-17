@@ -9,12 +9,12 @@ use Symfony\Component\Process\Process;
 class ConcurrencyTest extends BaseTestCase
 {
     /** @var Process[] */
-    private $processes = array();
+    private array $processes = array();
 
     private $configFile;
     private $databaseFile;
 
-    public function testHighConcurrency()
+    public function testHighConcurrency(): void
     {
         $this->startWorker('one');
         $this->startWorker('two');
@@ -53,7 +53,7 @@ class ConcurrencyTest extends BaseTestCase
         $this->assertEquals(array('one', 'two'), $workers);
     }
 
-    private function startWorker($name)
+    private function startWorker(string $name): void
     {
         $proc = new Process(
             'exec ' . PHP_BINARY . ' ' . escapeshellarg(
@@ -79,7 +79,7 @@ class ConcurrencyTest extends BaseTestCase
         $this->processes[] = $proc;
     }
 
-    private function waitUntilJobsProcessed($maxRuntime)
+    private function waitUntilJobsProcessed(int $maxRuntime): void
     {
         $start = time();
         do {
@@ -102,7 +102,7 @@ class ConcurrencyTest extends BaseTestCase
         }
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->databaseFile = tempnam(sys_get_temp_dir(), 'db');
         $this->configFile = tempnam(sys_get_temp_dir(), 'di-cfg');
@@ -128,7 +128,7 @@ CONFIG
         $this->importDatabaseSchema();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         @unlink($this->databaseFile);
         @unlink($this->configFile);

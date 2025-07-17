@@ -6,7 +6,7 @@ use Doctrine\ORM\Tools\SchemaValidator;
 
 class SchemaTest extends BaseTestCase
 {
-    public function testSchemaIsValid()
+    public function testSchemaIsValid(): void
     {
         $this->createClient();
 

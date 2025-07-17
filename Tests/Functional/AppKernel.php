@@ -23,7 +23,7 @@ class AppKernel extends Kernel
 {
     private $config;
 
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         return array(
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
@@ -36,12 +36,12 @@ class AppKernel extends Kernel
         );
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load($this->config);
     }
 
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return sys_get_temp_dir() . '/' . Kernel::VERSION . '/JMSJobQueueBundle/' . substr(
                 sha1($this->config),
@@ -50,12 +50,12 @@ class AppKernel extends Kernel
             ) . '/cache';
     }
 
-    public function getContainerClass()
+    public function getContainerClass(): string
     {
         return parent::getContainerClass() . '_' . substr(sha1($this->config), 0, 6);
     }
 
-    public function getLogDir()
+    public function getLogDir(): string
     {
         return sys_get_temp_dir() . '/' . Kernel::VERSION . '/JMSJobQueueBundle/' . substr(
                 sha1($this->config),
@@ -69,7 +69,7 @@ class AppKernel extends Kernel
         return $this->config;
     }
 
-    public function unserialize($config)
+    public function unserialize($config): void
     {
         $this->__construct($config);
     }
