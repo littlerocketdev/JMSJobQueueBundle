@@ -18,12 +18,12 @@ class JobManagerTest extends BaseTestCase
     private $em;
 
     /** @var JobManager */
-    private $jobManager;
+    private \JMS\JobQueueBundle\Entity\Repository\JobManager $jobManager;
 
     /** @var EventDispatcher */
-    private $dispatcher;
+    private \PHPUnit\Framework\MockObject\MockObject $dispatcher;
 
-    public function testGetOne()
+    public function testGetOne(): void
     {
         $a = new Job('a', array('foo'));
         $a2 = new Job('a');
@@ -36,22 +36,22 @@ class JobManagerTest extends BaseTestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      * @expectedExceptionMessage Found no job for command
      */
-    public function testGetOneThrowsWhenNotFound()
+    public function testGetOneThrowsWhenNotFound(): void
     {
         $this->jobManager->getJob('foo');
     }
 
-    public function getOrCreateIfNotExists()
+    public function getOrCreateIfNotExists(): void
     {
         $a = $this->jobManager->getOrCreateIfNotExists('a');
         $this->assertSame($a, $this->jobManager->getOrCreateIfNotExists('a'));
         $this->assertNotSame($a, $this->jobManager->getOrCreateIfNotExists('a', array('foo')));
     }
 
-    public function testFindPendingJobReturnsAllDependencies()
+    public function testFindPendingJobReturnsAllDependencies(): void
     {
         $a = new Job('a');
         $b = new Job('b');
@@ -73,7 +73,7 @@ class JobManagerTest extends BaseTestCase
         $this->assertCount(2, $cReloaded->getDependencies());
     }
 
-    public function testFindPendingJob()
+    public function testFindPendingJob(): void
     {
         $this->assertNull($this->jobManager->findPendingJob());
 
@@ -88,7 +88,7 @@ class JobManagerTest extends BaseTestCase
         $this->assertNull($this->jobManager->findPendingJob(array($b->getId())));
     }
 
-    public function testFindPendingJobInRestrictedQueue()
+    public function testFindPendingJobInRestrictedQueue(): void
     {
         $this->assertNull($this->jobManager->findPendingJob());
 
@@ -102,7 +102,7 @@ class JobManagerTest extends BaseTestCase
         $this->assertSame($b, $this->jobManager->findPendingJob(array(), array(), array('other_queue')));
     }
 
-    public function testFindStartableJob()
+    public function testFindStartableJob(): void
     {
         $this->assertNull($this->jobManager->findStartableJob('my-name'));
 
@@ -122,7 +122,7 @@ class JobManagerTest extends BaseTestCase
         $this->assertEquals(array($b->getId()), $excludedIds);
     }
 
-    public function testFindJobByRelatedEntity()
+    public function testFindJobByRelatedEntity(): void
     {
         $a = new Job('a');
         $b = new Job('b');
@@ -143,7 +143,7 @@ class JobManagerTest extends BaseTestCase
         $this->assertEquals($a->getId(), $reloadedB->getRelatedEntities()->first()->getId());
     }
 
-    public function testFindStartableJobDetachesNonStartableJobs()
+    public function testFindStartableJobDetachesNonStartableJobs(): void
     {
         $a = new Job('a');
         $b = new Job('b');
@@ -164,7 +164,7 @@ class JobManagerTest extends BaseTestCase
         $this->assertTrue($this->em->contains($b));
     }
 
-    public function testCloseJob()
+    public function testCloseJob(): void
     {
         $a = new Job('a');
         $a->setState('running');
@@ -188,7 +188,7 @@ class JobManagerTest extends BaseTestCase
         $this->assertEquals('canceled', $b->getState());
     }
 
-    public function testCloseJobDoesNotCreateRetryJobsWhenCanceled()
+    public function testCloseJobDoesNotCreateRetryJobsWhenCanceled(): void
     {
         $a = new Job('a');
         $a->setMaxRetries(4);
@@ -214,7 +214,7 @@ class JobManagerTest extends BaseTestCase
         $this->assertCount(0, $b->getRetryJobs());
     }
 
-    public function testCloseJobDoesNotCreateMoreThanAllowedRetries()
+    public function testCloseJobDoesNotCreateMoreThanAllowedRetries(): void
     {
         $a = new Job('a');
         $a->setMaxRetries(2);
@@ -260,7 +260,7 @@ class JobManagerTest extends BaseTestCase
         $this->assertCount(2, $reloadedA->getRetryJobs());
     }
 
-    public function testModifyingRelatedEntity()
+    public function testModifyingRelatedEntity(): void
     {
         $wagon = new Wagon();
         $train = new Train();
@@ -290,7 +290,7 @@ class JobManagerTest extends BaseTestCase
         $this->assertTrue($defEm->contains($reloadedWagon->train));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->createClient();
         $this->importDatabaseSchema();

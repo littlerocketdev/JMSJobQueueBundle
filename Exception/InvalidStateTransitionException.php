@@ -22,9 +22,9 @@ use JMS\JobQueueBundle\Entity\Job;
 
 class InvalidStateTransitionException extends \InvalidArgumentException
 {
-    private $job;
+    private \JMS\JobQueueBundle\Entity\Job $job;
     private $newState;
-    private $allowedStates;
+    private array $allowedStates;
 
     public function __construct(Job $job, $newState, array $allowedStates = array())
     {
@@ -42,7 +42,7 @@ class InvalidStateTransitionException extends \InvalidArgumentException
         $this->allowedStates = $allowedStates;
     }
 
-    public function getJob()
+    public function getJob(): \JMS\JobQueueBundle\Entity\Job
     {
         return $this->job;
     }
@@ -52,7 +52,7 @@ class InvalidStateTransitionException extends \InvalidArgumentException
         return $this->newState;
     }
 
-    public function getAllowedStates()
+    public function getAllowedStates(): array
     {
         return $this->allowedStates;
     }

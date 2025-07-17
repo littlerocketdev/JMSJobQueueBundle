@@ -58,7 +58,7 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addQueueOptions(ArrayNodeDefinition $def)
+    private function addQueueOptions(ArrayNodeDefinition $def): void
     {
         $def
             ->children()

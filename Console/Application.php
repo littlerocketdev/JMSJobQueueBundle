@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class Application extends BaseApplication
 {
     private string $insertStatStmt;
-    private $input;
+    private ?\Symfony\Component\Console\Input\InputInterface $input = null;
 
     public function __construct(KernelInterface $kernel)
     {
@@ -39,7 +39,7 @@ class Application extends BaseApplication
         }
     }
 
-    public function doRun(InputInterface $input, OutputInterface $output)
+    public function doRun(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
 
@@ -55,7 +55,7 @@ class Application extends BaseApplication
         }
     }
 
-    private function saveDebugInformation(\Exception $ex = null)
+    private function saveDebugInformation(\Exception $ex = null): void
     {
         if (!$this->input->hasOption('jms-job-id') || null === $jobId = $this->input->getOption('jms-job-id')) {
             return;
@@ -85,7 +85,7 @@ class Application extends BaseApplication
         )->getConnection();
     }
 
-    public function onTick()
+    public function onTick(): void
     {
         if (!$this->input->hasOption('jms-job-id') || null === $jobId = $this->input->getOption('jms-job-id')) {
             return;

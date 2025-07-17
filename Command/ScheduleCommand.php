@@ -15,6 +15,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'jms-job-queue:schedule')]
 class ScheduleCommand extends Command
@@ -67,7 +68,7 @@ class ScheduleCommand extends Command
         if (empty($jobSchedulers)) {
             $output->writeln('No job schedulers found, exiting...');
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $jobsLastRunAt = $this->populateJobsLastRunAt(
@@ -92,10 +93,13 @@ class ScheduleCommand extends Command
             }
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
-    private function populateJobSchedulers()
+    /**
+     * @return mixed[]
+     */
+    private function populateJobSchedulers(): array
     {
         $schedulers = [];
         foreach ($this->schedulers as $scheduler) {
@@ -117,7 +121,10 @@ class ScheduleCommand extends Command
         return $schedulers;
     }
 
-    private function populateJobsLastRunAt(ObjectManager $em, array $jobSchedulers)
+    /**
+     * @return mixed[]
+     */
+    private function populateJobsLastRunAt(ObjectManager $em, array $jobSchedulers): array
     {
         $jobsLastRunAt = array();
 
@@ -142,7 +149,7 @@ class ScheduleCommand extends Command
      * @param JobScheduler[] $jobSchedulers
      * @param \DateTime[] $jobsLastRunAt
      */
-    private function scheduleJobs(OutputInterface $output, array $jobSchedulers, array &$jobsLastRunAt)
+    private function scheduleJobs(OutputInterface $output, array $jobSchedulers, array &$jobsLastRunAt): void
     {
         foreach ($jobSchedulers as $name => $scheduler) {
             $lastRunAt = $jobsLastRunAt[$name];
@@ -164,7 +171,7 @@ class ScheduleCommand extends Command
         }
     }
 
-    private function acquireLock($commandName, \DateTime $lastRunAt)
+    private function acquireLock(int|string $commandName, \DateTime $lastRunAt): array
     {
         /** @var EntityManager $em */
         $em = $this->registry->getManagerForClass(CronJob::class);

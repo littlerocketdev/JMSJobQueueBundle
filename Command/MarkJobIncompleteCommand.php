@@ -10,6 +10,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'jms-job-queue:mark-incomplete')]
 class MarkJobIncompleteCommand extends Command
@@ -47,11 +48,11 @@ class MarkJobIncompleteCommand extends Command
         if ($job === null) {
             $output->writeln('<error>Job was not found.</error>');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $this->jobManager->closeJob($job, Job::STATE_INCOMPLETE);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
