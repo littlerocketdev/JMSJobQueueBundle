@@ -31,7 +31,7 @@ class SignalTest extends TestCase
             function () use ($proc) {
                 return false !== strpos($proc->getOutput(), 'Signal Handlers have been installed');
             },
-            function () use ($proc) {
+            function () use ($proc): void {
                 $this->fail('Signal handlers were not installed: ' . $proc->getOutput() . $proc->getErrorOutput());
             }
         );
@@ -43,7 +43,7 @@ class SignalTest extends TestCase
             function () use ($proc) {
                 return false !== strpos($proc->getOutput(), 'Received SIGTERM');
             },
-            function () use ($proc) {
+            function () use ($proc): void {
                 $this->fail(
                     'Signal was not received by process within 3 seconds: ' . $proc->getOutput(
                     ) . $proc->getErrorOutput()
@@ -56,7 +56,7 @@ class SignalTest extends TestCase
             function () use ($proc) {
                 return !$proc->isRunning();
             },
-            function () use ($proc) {
+            function () use ($proc): void {
                 $this->fail(
                     'Process did not terminate within 3 seconds: ' . $proc->getOutput() . $proc->getErrorOutput()
                 );
