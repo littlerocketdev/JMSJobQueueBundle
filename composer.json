@@ -24,19 +24,19 @@
     "doctrine/common": "^3.4"
   },
   "require-dev": {
-    "doctrine/doctrine-fixtures-bundle": "*",
-    "sensio/framework-extra-bundle": "*",
+    "doctrine/doctrine-fixtures-bundle": "^4.1",
     "symfony/yaml": "*",
     "symfony/browser-kit": "*",
     "symfony/finder": "*",
     "symfony/css-selector": "*",
-    "doctrine/doctrine-bundle": "*",
-    "doctrine/orm": "*",
+    "doctrine/doctrine-bundle": "^2.15",
+    "doctrine/orm": "^3.5",
     "symfony/twig-bundle": "*",
     "symfony/form": "*",
     "symfony/validator": "*",
-    "phpunit/phpunit": "^10.0",
-    "symfony/intl": "*"
+    "phpunit/phpunit": "^12.2",
+    "symfony/intl": "*",
+    "rector/rector": "^2.1"
   },
   "suggest": {
     "sensio/framework-extra-bundle": "Required when using the webinterface.",

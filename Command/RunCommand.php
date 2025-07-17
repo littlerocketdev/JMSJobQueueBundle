@@ -304,7 +304,7 @@ class RunCommand extends Command
 
     private function setupSignalHandlers()
     {
-        pcntl_signal(SIGTERM, function () {
+        pcntl_signal(SIGTERM, function (): void {
             if ($this->verbose) {
                 $this->output->writeln('Received SIGTERM signal.');
             }

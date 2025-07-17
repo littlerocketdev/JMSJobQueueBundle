@@ -83,7 +83,7 @@ class CleanUpCommand extends Command
 
             $result = $con->executeQuery($incomingDepsSql, array('id' => $job->getId()));
             if ($result->fetchOne() !== false) {
-                $em->transactional(function () use ($em, $job) {
+                $em->transactional(function () use ($em, $job): void {
                     $this->resolveDependencies($em, $job);
                     $em->remove($job);
                 });
