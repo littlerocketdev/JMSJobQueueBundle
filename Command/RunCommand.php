@@ -156,7 +156,13 @@ class RunCommand extends Command
         $this->env = $input->getOption('env');
         $this->verbose = $input->getOption('verbose');
         $this->output = $output;
-        $this->getEntityManager()->getConnection()->getConfiguration()->setSQLLogger(null);
+
+        // Remove logging middleware
+        $em = $this->getEntityManager();
+        $conf = $em->getConnection()->getConfiguration();
+        $mids = $conf->getMiddlewares();
+        $mids = array_filter($mids, fn($mid) => !($mid instanceof \Doctrine\DBAL\Logging\Middleware));
+        $conf->setMiddlewares($mids);
 
         if ($this->verbose) {
             $this->output->writeln('Cleaning up stale jobs');
