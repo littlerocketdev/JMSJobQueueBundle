@@ -21,6 +21,7 @@ namespace JMS\JobQueueBundle\Entity;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use InvalidArgumentException;
 use JMS\JobQueueBundle\Exception\InvalidStateTransitionException;
 use JMS\JobQueueBundle\Exception\LogicException;
@@ -92,6 +93,7 @@ class Job
     public const PRIORITY_HIGH = 5;
 
     #[ORM\Id]
+    #[ORM\Column(type: 'bigint')]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
@@ -130,7 +132,7 @@ class Job
 
     #[ORM\ManyToMany(targetEntity: Job::class, fetch: 'EAGER')]
     #[ORM\JoinTable(name: 'jms_job_dependencies', joinColumns: [new ORM\JoinColumn(name: 'source_job_id', referencedColumnName: 'id')], inverseJoinColumns: [new ORM\JoinColumn(name: 'dest_job_id', referencedColumnName: 'id')])]
-    private \Doctrine\Common\Collections\ArrayCollection $dependencies;
+    private PersistentCollection $dependencies;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $output;
@@ -152,10 +154,10 @@ class Job
     private ?\JMS\JobQueueBundle\Entity\Job $originalJob = null;
 
     #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'originalJob', cascade: ['persist', 'remove', 'detach', 'refresh'])]
-    private \Doctrine\Common\Collections\ArrayCollection $retryJobs;
+    private PersistentCollection $retryJobs;
 
-    #[ORM\Column(type: 'jms_job_safe_object', name: 'stackTrace', nullable: true)]
-    private ?FlattenException $stackTrace = null;
+    #[ORM\Column(type: 'binary', name: 'stackTrace', nullable: true)]
+    private ?string $stackTrace = null;
 
     #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     private ?int $runtime = null;

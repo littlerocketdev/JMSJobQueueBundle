@@ -64,12 +64,12 @@ class JMSJobQueueExtension extends Extension implements PrependExtensionInterfac
 
         // Register DBAL type as a SERVICE INSTANCE (DBAL 4 compatible)
         // This replaces the old 'dbal.types: { name: class-string }' approach.
-        $container->setDefinition(
-            'jms_job_queue.dbal_type.safe_object',
-            (new Definition(SafeObjectType::class))
-                ->setPublic(false)
-                ->addTag('doctrine.dbal.type', ['name' => 'jms_job_safe_object'])
-        );
+        // $container->setDefinition(
+        //     'jms_job_queue.dbal_type.safe_object',
+        //     (new Definition(SafeObjectType::class))
+        //         ->setPublic(false)
+        //         ->addTag('doctrine.dbal.type', ['name' => 'jms_job_safe_object'])
+        // );
     }
 
     /**

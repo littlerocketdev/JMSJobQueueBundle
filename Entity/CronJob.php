@@ -10,11 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
 class CronJob
 {
     #[ORM\Id]
+    #[ORM\Column(type: 'bigint')]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    private $id;
+    private string $id;
 
     #[ORM\Column(type: 'string', length: 200, unique: true)]
-    private $command;
+    private string $command;
 
     #[ORM\Column(type: 'datetime', name: 'lastRunAt')]
     private \DateTime $lastRunAt;
@@ -35,4 +36,3 @@ class CronJob
         return $this->lastRunAt;
     }
 }
-
