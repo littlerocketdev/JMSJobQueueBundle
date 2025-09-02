@@ -39,7 +39,7 @@ use Symfony\Component\ErrorHandler\Exception\FlattenException;
 class Job
 {
     /** State if job is inserted, but not yet ready to be started. */
-    const STATE_NEW = 'new';
+    public const STATE_NEW = 'new';
 
     /**
      * State if job is inserted, and might be started.
@@ -51,22 +51,22 @@ class Job
      * In contrast to NEW, jobs of this state at least might be started,
      * while jobs of state NEW never are allowed to be started.
      */
-    const STATE_PENDING = 'pending';
+    public const STATE_PENDING = 'pending';
 
     /** State if job was never started, and will never be started. */
-    const STATE_CANCELED = 'canceled';
+    public const STATE_CANCELED = 'canceled';
 
     /** State if job was started and has not exited, yet. */
-    const STATE_RUNNING = 'running';
+    public const STATE_RUNNING = 'running';
 
     /** State if job exists with a successful exit code. */
-    const STATE_FINISHED = 'finished';
+    public const STATE_FINISHED = 'finished';
 
     /** State if job exits with a non-successful exit code. */
-    const STATE_FAILED = 'failed';
+    public const STATE_FAILED = 'failed';
 
     /** State if job exceeds its configured maximum runtime. */
-    const STATE_TERMINATED = 'terminated';
+    public const STATE_TERMINATED = 'terminated';
 
     /**
      * State if an error occurs in the runner command.
@@ -75,7 +75,7 @@ class Job
      * jobs. If instead an error occurs in the job command, this will result
      * in a state of FAILED.
      */
-    const STATE_INCOMPLETE = 'incomplete';
+    public const STATE_INCOMPLETE = 'incomplete';
 
     /**
      * State if an error occurs in the runner command.
@@ -84,14 +84,15 @@ class Job
      * jobs. If instead an error occurs in the job command, this will result
      * in a state of FAILED.
      */
-    const DEFAULT_QUEUE = 'default';
-    const MAX_QUEUE_LENGTH = 50;
+    public const DEFAULT_QUEUE = 'default';
+    public const MAX_QUEUE_LENGTH = 50;
 
-    const PRIORITY_LOW = -5;
-    const PRIORITY_DEFAULT = 0;
-    const PRIORITY_HIGH = 5;
+    public const PRIORITY_LOW = -5;
+    public const PRIORITY_DEFAULT = 0;
+    public const PRIORITY_HIGH = 5;
 
     #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 15)]
@@ -476,7 +477,7 @@ class Job
 
     public function setRuntime($time): void
     {
-        $this->runtime = (integer)$time;
+        $this->runtime = (int)$time;
     }
 
     public function getMemoryUsage()
@@ -536,7 +537,7 @@ class Job
 
     public function setMaxRuntime($time): void
     {
-        $this->maxRuntime = (integer)$time;
+        $this->maxRuntime = (int)$time;
     }
 
     public function getStartedAt()
@@ -551,7 +552,7 @@ class Job
 
     public function setMaxRetries($tries): void
     {
-        $this->maxRetries = (integer)$tries;
+        $this->maxRetries = (int)$tries;
     }
 
     public function isRetryAllowed()
