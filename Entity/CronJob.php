@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class CronJob
 {
     #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 200, unique: true)]
