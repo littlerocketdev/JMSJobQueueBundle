@@ -23,6 +23,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use InvalidArgumentException;
+use JMS\JobQueueBundle\Entity\Listener\PersistentRelatedEntitiesCollection;
 use JMS\JobQueueBundle\Exception\InvalidStateTransitionException;
 use JMS\JobQueueBundle\Exception\LogicException;
 use RuntimeException;
@@ -174,7 +175,7 @@ class Job
      *
      * It is effectively a many-to-any association.
      */
-    private \Doctrine\Common\Collections\ArrayCollection $relatedEntities;
+    private PersistentRelatedEntitiesCollection $relatedEntities;
 
     public function __construct(
         $command,
