@@ -20,10 +20,9 @@ namespace JMS\JobQueueBundle\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 use InvalidArgumentException;
-use JMS\JobQueueBundle\Entity\Listener\PersistentRelatedEntitiesCollection;
 use JMS\JobQueueBundle\Exception\InvalidStateTransitionException;
 use JMS\JobQueueBundle\Exception\LogicException;
 use RuntimeException;
@@ -133,7 +132,7 @@ class Job
 
     #[ORM\ManyToMany(targetEntity: Job::class, fetch: 'EAGER')]
     #[ORM\JoinTable(name: 'jms_job_dependencies', joinColumns: [new ORM\JoinColumn(name: 'source_job_id', referencedColumnName: 'id')], inverseJoinColumns: [new ORM\JoinColumn(name: 'dest_job_id', referencedColumnName: 'id')])]
-    private PersistentCollection $dependencies;
+    private Collection $dependencies;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $output;
@@ -155,7 +154,7 @@ class Job
     private ?\JMS\JobQueueBundle\Entity\Job $originalJob = null;
 
     #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'originalJob', cascade: ['persist', 'remove', 'detach', 'refresh'])]
-    private PersistentCollection $retryJobs;
+    private Collection $retryJobs;
 
     #[ORM\Column(type: 'binary', name: 'stackTrace', nullable: true)]
     private ?string $stackTrace = null;
@@ -175,7 +174,7 @@ class Job
      *
      * It is effectively a many-to-any association.
      */
-    private PersistentRelatedEntitiesCollection $relatedEntities;
+    private Collection $relatedEntities;
 
     public function __construct(
         $command,
