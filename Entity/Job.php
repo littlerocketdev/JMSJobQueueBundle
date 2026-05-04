@@ -92,8 +92,8 @@ class Job
     const PRIORITY_HIGH = 5;
 
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'bigint')]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
     #[ORM\Column(type: 'string', length: 15)]
