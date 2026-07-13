@@ -187,7 +187,7 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
      * @see containsKey()
      *
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         $this->initialize();
 
@@ -215,7 +215,7 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
      * @see get()
      *
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         $this->initialize();
 
@@ -248,7 +248,7 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
      *
      * @see add()
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): bool
     {
         throw new \LogicException('Adding new related entities is not supported after initial creation.');
     }
@@ -261,7 +261,7 @@ class PersistentRelatedEntitiesCollection implements Collection, Selectable
      * @see remove()
      *
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): mixed
     {
         throw new \LogicException('unset() is not supported.');
     }

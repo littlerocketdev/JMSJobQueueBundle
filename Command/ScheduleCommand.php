@@ -88,7 +88,7 @@ class ScheduleCommand extends Command
 
             $timeToWait = microtime(true) - $lastRunAt + $minJobInterval;
             if ($timeToWait > 0) {
-                usleep($timeToWait * 1E6);
+                usleep((int) round($timeToWait * 1000000));
             }
         }
 
