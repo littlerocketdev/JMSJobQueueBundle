@@ -23,27 +23,25 @@ use JMS\JobQueueBundle\Cron\JobScheduler;
 use JMS\JobQueueBundle\Entity\Type\SafeObjectType;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
 
 /**
- * This is the class that loads and manages your bundle configuration
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
+ * This is the class that loads and manages your bundle configuration.
  */
 class JMSJobQueueExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
-
 
         $yamlLoader = new Loader\YamlFileLoader($container, $fileLocator);
         $yamlLoader->load('services.yml');
@@ -63,18 +61,30 @@ class JMSJobQueueExtension extends Extension implements PrependExtensionInterfac
 
         $container->setParameter('jms_job_queue.queue_options_defaults', $config['queue_options_defaults']);
         $container->setParameter('jms_job_queue.queue_options', $config['queue_options']);
+
+        // Register DBAL type as a SERVICE INSTANCE (DBAL 4 compatible)
+        // This replaces the old 'dbal.types: { name: class-string }' approach.
+        // $container->setDefinition(
+        //     'jms_job_queue.dbal_type.safe_object',
+        //     (new Definition(SafeObjectType::class))
+        //         ->setPublic(false)
+        //         ->addTag('doctrine.dbal.type', ['name' => 'jms_job_safe_object'])
+        // );
     }
 
-    public function prepend(ContainerBuilder $container)
+    /**
+     * Prepend optional platform mapping (safe; remove if not needed).
+     */
+    public function prepend(ContainerBuilder $container): void
     {
-        $container->prependExtensionConfig('doctrine', array(
-            'dbal' => array(
-                'types' => array(
-                    'jms_job_safe_object' => array(
-                        'class' => SafeObjectType::class,
-                    )
-                )
-            )
-        ));
+        // If your DB contains columns declared as "jms_job_safe_object",
+        // help the platform map them (commonly to TEXT). This is optional.
+        $container->prependExtensionConfig('doctrine', [
+            'dbal' => [
+                'mapping_types' => [
+                    'jms_job_safe_object' => 'text',
+                ],
+            ],
+        ]);
     }
 }

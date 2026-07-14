@@ -15,34 +15,33 @@
     {
       "name": "Johannes M. Schmitt",
       "email": "schmittjoh@gmail.com"
-    },
-    {
-      "name": "Daan Gebraad",
-      "email": "daan@littlerocket.nl"
     }
   ],
   "require": {
-    "php": "^8.0",
-    "symfony/framework-bundle": "^4.0 || ^5.0 || ^7.0",
-    "symfony/error-handler": "^4.0 || ^5.0 || ^6.0 || ^7.0",
-    "doctrine/common": "^3.5",
-    "symfony/process": "^7.0"
+    "php": "^8.3",
+    "ext-pcntl": "*",
+    "ext-pdo": "*",
+    "symfony/framework-bundle": "^7.2",
+    "symfony/process": "^7.2",
+    "doctrine/common": "^3.4"
   },
   "require-dev": {
-    "doctrine/doctrine-fixtures-bundle": "*",
+    "doctrine/doctrine-fixtures-bundle": "^4.1",
     "symfony/yaml": "*",
     "symfony/browser-kit": "*",
     "symfony/finder": "*",
     "symfony/css-selector": "*",
-    "doctrine/doctrine-bundle": "*",
-    "doctrine/orm": "*",
+    "doctrine/doctrine-bundle": "^2.15",
+    "doctrine/orm": "^3.5",
     "symfony/twig-bundle": "*",
     "symfony/form": "*",
     "symfony/validator": "*",
-    "phpunit/phpunit": "*",
-    "symfony/intl": "*"
+    "phpunit/phpunit": "^12.2",
+    "symfony/intl": "*",
+    "rector/rector": "^2.1"
   },
   "suggest": {
+    "sensio/framework-extra-bundle": "Required when using the webinterface.",
     "symfony/twig-bundle": "Required when using the webinterface."
   },
   "autoload": {

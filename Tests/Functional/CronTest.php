@@ -10,12 +10,12 @@ use Symfony\Component\Console\Input\ArrayInput;
 class CronTest extends BaseTestCase
 {
     /** @var Application */
-    private $app;
+    private \Symfony\Bundle\FrameworkBundle\Console\Application $app;
 
     /** @var EntityManager */
     private $em;
 
-    public function testSchedulesCommands()
+    public function testSchedulesCommands(): void
     {
         $output = $this->doRun(array('--min-job-interval' => 1, '--max-runtime' => 12));
         $this->assertEquals(2, substr_count($output, 'Scheduling command scheduled-every-few-seconds'), $output);
@@ -30,7 +30,7 @@ class CronTest extends BaseTestCase
         return $output->getOutput();
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->createClient(array('config' => 'persistent_db.yml'));
 

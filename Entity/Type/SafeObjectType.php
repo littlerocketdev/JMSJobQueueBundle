@@ -3,7 +3,7 @@
 namespace JMS\JobQueueBundle\Entity\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Type;
+use Symfony\Component\TypeInfo\Type\Type;
 
 class SafeObjectType extends Type
 {

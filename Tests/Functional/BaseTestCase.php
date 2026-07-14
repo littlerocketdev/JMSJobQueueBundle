@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class BaseTestCase extends WebTestCase
 {
-    static protected function createKernel(array $options = array())
+    static protected function createKernel(array $options = array()): \Symfony\Component\HttpKernel\KernelInterface
     {
         $config = isset($options['config']) ? $options['config'] : 'default.yml';
 
@@ -21,7 +21,7 @@ class BaseTestCase extends WebTestCase
         }
     }
 
-    private function importSchemaForEm(EntityManager $em)
+    private function importSchemaForEm(EntityManager $em): void
     {
         $metadata = $em->getMetadataFactory()->getAllMetadata();
         if (!empty($metadata)) {

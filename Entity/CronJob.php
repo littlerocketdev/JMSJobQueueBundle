@@ -4,21 +4,21 @@ namespace JMS\JobQueueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'jms_cron_jobs')]
 #[ORM\Entity]
 #[ORM\ChangeTrackingPolicy('DEFERRED_EXPLICIT')]
+#[ORM\Table(name: 'jms_cron_jobs')]
 class CronJob
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue]
-    private $id;
+    #[ORM\Column(type: 'bigint')]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private string $id;
 
     #[ORM\Column(type: 'string', length: 200, unique: true)]
-    private $command;
+    private string $command;
 
     #[ORM\Column(type: 'datetime', name: 'lastRunAt')]
-    private $lastRunAt;
+    private \DateTime $lastRunAt;
 
     public function __construct($command)
     {
@@ -31,7 +31,7 @@ class CronJob
         return $this->command;
     }
 
-    public function getLastRunAt()
+    public function getLastRunAt(): \DateTime
     {
         return $this->lastRunAt;
     }

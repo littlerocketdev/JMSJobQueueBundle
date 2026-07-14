@@ -7,6 +7,7 @@ declare(ticks=10000000);
 use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\Type;
 use JMS\JobQueueBundle\Entity\Job;
+use PDO;
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class Application extends BaseApplication
 {
     private string $insertStatStmt;
-    private $input;
+    private ?\Symfony\Component\Console\Input\InputInterface $input = null;
 
     public function __construct(KernelInterface $kernel)
     {
@@ -55,25 +56,18 @@ class Application extends BaseApplication
         }
     }
 
-    private function saveDebugInformation(\Exception $ex = null)
+    private function saveDebugInformation(\Exception $ex = null): void
     {
         if (!$this->input->hasOption('jms-job-id') || null === $jobId = $this->input->getOption('jms-job-id')) {
             return;
         }
 
-        $this->getConnection()->executeUpdate(
-            "UPDATE jms_jobs SET stackTrace = :trace, memoryUsage = :memoryUsage, memoryUsageReal = :memoryUsageReal WHERE id = :id",
+        $this->getConnection()->executeStatement(
+            "UPDATE jms_jobs SET  memoryUsage = :memoryUsage, memoryUsageReal = :memoryUsageReal WHERE id = :id",
             array(
-                'id' => $jobId,
-                'memoryUsage' => memory_get_peak_usage(),
-                'memoryUsageReal' => memory_get_peak_usage(true),
-                'trace' => serialize($ex ? FlattenException::create($ex) : null),
-            ),
-            array(
-                'id' => \PDO::PARAM_INT,
-                'memoryUsage' => \PDO::PARAM_INT,
-                'memoryUsageReal' => \PDO::PARAM_INT,
-                'trace' => \PDO::PARAM_LOB,
+                'id' => (string) $jobId,
+                'memoryUsage' => (string) memory_get_peak_usage(),
+                'memoryUsageReal' => (string) memory_get_peak_usage(true),
             )
         );
     }
@@ -85,7 +79,7 @@ class Application extends BaseApplication
         )->getConnection();
     }
 
-    public function onTick()
+    public function onTick(): void
     {
         if (!$this->input->hasOption('jms-job-id') || null === $jobId = $this->input->getOption('jms-job-id')) {
             return;
